@@ -4,7 +4,10 @@ import pandas as pd
 import time
 import random
 import base64
-
+import tensorflow as tf
+from PIL import Image
+import numpy as npS
+import numpy as np
 # -------------------------
 # SESSION STATE
 # -------------------------
@@ -182,15 +185,36 @@ st.markdown(
             transform: translateY(0px);
         }
     }
-    [data-testid="stSidebar"] {
-        display: none;
-    }
 
     .block-container {
         padding-top: 1.5rem;
     }
     .block-container {
         padding-top: 2rem;
+    }
+    header {
+        visibility: hidden;
+        height: 0px;
+    }
+
+    [data-testid="stToolbar"] {
+        display: none !important;
+    }
+
+    [data-testid="stDecoration"] {
+        display: none !important;
+    }
+
+    [data-testid="stStatusWidget"] {
+        display: none !important;
+    }
+
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
     }
     </style>
     """,
@@ -340,6 +364,15 @@ st.markdown("---")
 # LOAD MODEL
 # -------------------------
 model = joblib.load('models/xgboost_model.pkl')
+
+image_model = tf.keras.models.load_model(
+    "app/image_model/road_image_classifier.h5"
+)
+image_classes = [
+    "Good Road",
+    "Moderately Damaged Road",
+    "Damaged Road"
+]
 if page == "Dashboard":
     left_panel, main_panel = st.columns([1.1, 3])
     with left_panel:
@@ -642,7 +675,48 @@ if page == "Dashboard":
                                 "All sensor streams operating within stable thresholds."
                             )
 
-                    
+            # ---------------------------------------------------
+            # ROAD IMAGE AI CLASSIFICATION
+            # ---------------------------------------------------
+
+            st.markdown("---")
+
+            st.subheader("Road Image AI Classification")
+
+            uploaded_file = st.file_uploader(
+                "Upload a Road Image",
+                type=["jpg", "jpeg", "png"]
+            )
+
+            if uploaded_file is not None:
+
+                image = Image.open(uploaded_file)
+
+                st.image(
+                    image,
+                    caption="Uploaded Road Image",
+                    use_container_width=True
+                )
+
+                resized_image = image.resize((224, 224))
+
+                img_array = np.array(resized_image) / 255.0
+
+                img_array = np.expand_dims(img_array, axis=0)
+
+                prediction = image_model.predict(img_array)
+
+                predicted_class = image_classes[np.argmax(prediction)]
+
+                confidence = np.max(prediction) * 100
+
+                st.success(
+                    f"Predicted Surface: {predicted_class}"
+                )
+
+                st.info(
+                    f"Confidence Score: {confidence:.2f}%"
+                )    
                 # -------------------------
                 # MODEL PERFORMANCE VISUALS
                 # -------------------------

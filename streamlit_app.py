@@ -640,70 +640,67 @@ if page == "Dashboard":
                 # Sensor Table
                 st.markdown("---")
 
-                left_space, center_area, right_space = st.columns([1, 2.8, 1])
+                telemetry1, telemetry2, telemetry3 = st.columns(3)
 
-                with center_area:
+                with telemetry1:
+                    st.metric("Vehicle Speed", "48 km/h", "+3 km/h")
 
-                        telemetry1, telemetry2, telemetry3 = st.columns(3)
+                with telemetry2:
+                    st.metric("Terrain Stability", "Stable", "Nominal")
 
-                        with telemetry1:
-                            st.metric("Vehicle Speed", "48 km/h", "+3 km/h")
+                with telemetry3:
+                    st.metric("Sensor Sync", "99.2%", "+0.4%")
 
-                        with telemetry2:
-                            st.metric("Terrain Stability", "Stable", "Nominal")
+                st.subheader("Live Sensor Readings")
 
-                        with telemetry3:
-                            st.metric("Sensor Sync", "99.2%", "+0.4%")
+                sensor_df = pd.DataFrame({
+                    'Sensor': [
+                        'IMU',
+                        'LiDAR',
+                        'Camera',
+                        'Wheel Speed',
+                        'GPS'
+                    ],
+                    'Current Value': [
+                        imu,
+                        lidar,
+                        camera,
+                        wheel,
+                        gps
+                    ]
+                })
 
-                        st.subheader("Live Sensor Readings")
+                st.dataframe(sensor_df, use_container_width=True)
 
-                        sensor_df = pd.DataFrame({
-                            'Sensor': [
-                                'IMU',
-                                'LiDAR',
-                                'Camera',
-                                'Wheel Speed',
-                                'GPS'
-                            ],
-                            'Current Value': [
-                                imu,
-                                lidar,
-                                camera,
-                                wheel,
-                                gps
-                            ]
-                        })
+                st.subheader("System Stability Analysis")
 
-                        st.dataframe(sensor_df, use_container_width=True)
+                failed_sensors = []
 
-                        st.subheader("System Stability Analysis")
+                if imu_fail:
+                    failed_sensors.append("IMU")
 
-                        failed_sensors = []
+                if lidar_fail:
+                    failed_sensors.append("LiDAR")
 
-                        if imu_fail:
-                            failed_sensors.append("IMU")
+                if camera_fail:
+                    failed_sensors.append("Camera")
 
-                        if lidar_fail:
-                            failed_sensors.append("LiDAR")
+                if failed_sensors:
 
-                        if camera_fail:
-                            failed_sensors.append("Camera")
+                    st.error(
+                        f"Sensor anomaly detected in: {', '.join(failed_sensors)}"
+                    )
 
-                        if failed_sensors:
+                    st.info(
+                        "Fault-tolerant fusion activated. Remaining sensor modalities compensating for degraded inputs."
+                    )
 
-                            st.error(
-                                f"Sensor anomaly detected in: {', '.join(failed_sensors)}"
-                            )
+                else:
 
-                            st.info(
-                                "Fault-tolerant fusion activated. Remaining sensor modalities compensating for degraded inputs."
-                            )
+                    st.success(
+                        "All sensor streams operating within stable thresholds."
+                    )
 
-                        else:
-
-                            st.success(
-                                "All sensor streams operating within stable thresholds."
-                            )
 
             # ---------------------------------------------------
             # ROAD IMAGE AI CLASSIFICATION

@@ -369,7 +369,7 @@ model = joblib.load('models/xgboost_model.pkl')
 try:
     image_model = load_model(
         "road_image_classifier.keras",
-        compile=False
+        compile=False,
         safe_mode=False
     )
     st.success("Image model loaded successfully!")

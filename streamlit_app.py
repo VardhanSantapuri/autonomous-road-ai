@@ -365,10 +365,15 @@ st.markdown("---")
 # -------------------------
 model = joblib.load('models/xgboost_model.pkl')
 
-image_model = tf.keras.models.load_model(
-    "road_image_classifier.h5",
-    compile=False
-)
+try:
+    image_model = tf.keras.models.load_model(
+        "road_image_classifier.h5",
+        compile=False
+    )
+    st.success("Image model loaded successfully!")
+
+except Exception as e:
+    st.error(str(e))
 image_classes = [
     "Good Road",
     "Moderately Damaged Road",

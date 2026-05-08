@@ -367,6 +367,7 @@ model = joblib.load('models/xgboost_model.pkl')
 
 image_model = tf.keras.models.load_model(
     "road_image_classifier.h5"
+    compile=False
 )
 image_classes = [
     "Good Road",

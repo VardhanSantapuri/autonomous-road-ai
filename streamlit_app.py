@@ -776,15 +776,7 @@ if page == "Dashboard":
             
             st.markdown(performance_html, unsafe_allow_html=True)
 
-            
-            st.markdown(
-                f"""
-                <div class="performance-section">
-                    {''.join(performance_cards)}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        
 
 
 # -------------------------

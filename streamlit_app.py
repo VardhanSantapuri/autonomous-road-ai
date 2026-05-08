@@ -752,27 +752,30 @@ if page == "Dashboard":
                 # -------------------------
 
             st.markdown("---")
-
+            
             st.subheader("Classification Performance")
-
+            
             performance_images = [
                 ("results/confusion_matrix.png", "Confusion Matrix"),
                 ("results/feature_importance.png", "Feature Importance")
             ]
             
-            performance_cards = []
+            performance_html = '<div class="performance-section">'
             
             for image_path, image_alt in performance_images:
                 with open(image_path, "rb") as image_file:
                     encoded_image = base64.b64encode(image_file.read()).decode()
             
-                performance_cards.append(
-                    f"""
-                    <div class="performance-card">
-                        <img src="data:image/png;base64,{encoded_image}" alt="{image_alt}">
-                    </div>
-                    """
+                performance_html += (
+                    f'<div class="performance-card">'
+                    f'<img src="data:image/png;base64,{encoded_image}" alt="{image_alt}">'
+                    f'</div>'
                 )
+            
+            performance_html += '</div>'
+            
+            st.markdown(performance_html, unsafe_allow_html=True)
+
             
             st.markdown(
                 f"""

@@ -1,5 +1,5 @@
-streamlit
-tensorflow==2.15.0
+streamlit==1.32.2
+tensorflow-cpu==2.15.0
 pandas
 numpy
 scikit-learn
@@ -7,3 +7,5 @@ xgboost
 joblib
 matplotlib
 pillow
+h5py
+protobuf==3.20.*

@@ -1,5 +1,6 @@
 streamlit==1.32.2
-tensorflow-cpu==2.15.0
+tensorflow-cpu>=2.16
+keras==3.14.1
 pandas
 numpy
 scikit-learn
@@ -8,4 +9,4 @@ joblib
 matplotlib
 pillow
 h5py
-protobuf==3.20.*
+protobuf

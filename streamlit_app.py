@@ -7,6 +7,7 @@ import base64
 import tensorflow as tf
 from PIL import Image
 import numpy as npS
+from keras.models import load_model
 import numpy as np
 # -------------------------
 # SESSION STATE
@@ -366,9 +367,10 @@ st.markdown("---")
 model = joblib.load('models/xgboost_model.pkl')
 
 try:
-    image_model = tf.keras.models.load_model(
+    image_model = load_model(
         "road_image_classifier.keras",
         compile=False
+        safe_mode=False
     )
     st.success("Image model loaded successfully!")
 

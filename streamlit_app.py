@@ -722,7 +722,7 @@ if page == "Dashboard":
                 st.image(
                     image,
                     caption="Uploaded Road Image",
-                    use_container_width=True
+                    use_column_width=True
                 )
 
                 resized_image = image.resize((224, 224))

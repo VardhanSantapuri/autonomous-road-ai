@@ -229,7 +229,20 @@ if not st.session_state.logged_in:
             color: #555;
             margin-bottom: 35px;
         }
+        /* Hide Streamlit top toolbar */
+        header {
+            visibility: hidden;
+        }
 
+        /* Hide footer */
+        footer {
+            visibility: hidden;
+        }
+
+        /* Remove top spacing */
+        .block-container {
+            padding-top: 1rem;
+        }
         </style>
         """,
         unsafe_allow_html=True

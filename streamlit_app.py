@@ -84,6 +84,28 @@ st.markdown(
         animation: glow 2s infinite alternate;
         box-shadow: 0px 4px 30px rgba(0,0,0,0.4);
     }
+    .performance-section {
+        max-width: 860px;
+        margin: 0 auto;
+    }
+    
+    .performance-card {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 28px 34px;
+        margin: 24px auto;
+        box-shadow: 0px 4px 18px rgba(0,0,0,0.06);
+        overflow: hidden;
+    }
+    
+    .performance-card img {
+        display: block;
+        width: 100%;
+        max-width: 720px;
+        height: auto;
+        margin: 0 auto;
+    }
+
 
     /* Sidebar */
     section[data-testid="stSidebar"] {
@@ -733,19 +755,34 @@ if page == "Dashboard":
 
             st.subheader("Classification Performance")
 
-            space1, content, space2 = st.columns([1.5,4,1.5])
-
-            with content:
-
-                st.image(
-                    "results/confusion_matrix.png",
-                    width=700
+            performance_images = [
+                ("results/confusion_matrix.png", "Confusion Matrix"),
+                ("results/feature_importance.png", "Feature Importance")
+            ]
+            
+            performance_cards = []
+            
+            for image_path, image_alt in performance_images:
+                with open(image_path, "rb") as image_file:
+                    encoded_image = base64.b64encode(image_file.read()).decode()
+            
+                performance_cards.append(
+                    f"""
+                    <div class="performance-card">
+                        <img src="data:image/png;base64,{encoded_image}" alt="{image_alt}">
+                    </div>
+                    """
                 )
+            
+            st.markdown(
+                f"""
+                <div class="performance-section">
+                    {''.join(performance_cards)}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-                st.image(
-                    "results/feature_importance.png",
-                    width=700
-                )
 
 # -------------------------
 # FOOTER

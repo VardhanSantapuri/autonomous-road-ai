@@ -368,7 +368,7 @@ model = joblib.load('models/xgboost_model.pkl')
 
 try:
     image_model = load_model(
-        "road_image_classifier.keras",
+        "new_road_model.keras",
         compile=False,
         safe_mode=False
     )
